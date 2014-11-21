@@ -114,16 +114,19 @@ io.sockets.on('connection', function (client) {
     // create shared secret nonces for TURN authentication
     // the process is described in draft-uberti-behave-turn-rest
     var credentials = [];
+//    config.turnservers.forEach(function (server) {
+//        var hmac = crypto.createHmac('sha1', server.secret);
+//        // default to 86400 seconds timeout unless specified
+//        var username = Math.floor(new Date().getTime() / 1000) + (server.expiry || 86400) +':jyz';
+//        hmac.update(username);
+//        credentials.push({
+//            username: username,
+//            credential: hmac.digest('base64'),
+//            url: server.url
+//        });
+//    });
     config.turnservers.forEach(function (server) {
-        var hmac = crypto.createHmac('sha1', server.secret);
-        // default to 86400 seconds timeout unless specified
-        var username = Math.floor(new Date().getTime() / 1000) + (server.expiry || 86400) + "";
-        hmac.update(username);
-        credentials.push({
-            username: username,
-            credential: hmac.digest('base64'),
-            url: server.url
-        });
+        credentials.push(server);
     });
     client.emit('turnservers', credentials);
 });
